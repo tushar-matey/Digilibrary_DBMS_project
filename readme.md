@@ -23,7 +23,7 @@ DigiLibrary is a comprehensive library management system designed as a Database 
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/yourusername/digilibrary.git
+    git clone https://github.com/Hr810004/digilibrary.git
     ```
 2. **Navigate to the project directory**:
     ```sh
