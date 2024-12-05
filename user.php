@@ -1,9 +1,67 @@
 <?php
+// session_start();
+
+// // Check if the form is submitted
+// if (isset($_POST['login'])) {
+//     // Define your database connection parameters
+//     $host = 'localhost';
+//     $username = 'root';
+//     $password = '';
+//     $database = 'digilibrary_db';
+
+//     // Establish database connection
+//     $conn = mysqli_connect($host, $username, $password, $database);
+
+//     // Check if the connection was successful
+//     if (!$conn) {
+//         die("Connection failed: " . mysqli_connect_error());
+//     }
+
+//     // Define your variables to store user input
+//     $email = $_POST['email'];
+//     $password = $_POST['password'];
+//     //changed
+//     // $name = "SELECT firstname FROM users WHERE email = '$email'";
+//     // $result2 = mysqli_query($conn, $name);
+//     // $row2 = mysqli_fetch_assoc($result2);
+
+//     // // Perform SQL query to retrieve the hashed password for the given email
+//     // $query = "SELECT password FROM users WHERE email = '$email'";
+//     // $result = mysqli_query($conn, $query);
+//     $query = "SELECT firstname, password FROM users WHERE email = '$email'";
+//     $result = mysqli_query($conn, $query);
+
+
+//     if (mysqli_num_rows($result) == 1) {
+//         // Fetch the hashed password from the result
+//         $row = mysqli_fetch_assoc($result);
+//         $hashed_password = $row['password'];
+
+//         // Verify the entered password with the hashed password
+//         if (password_verify($password, $hashed_password)) {
+//             // Passwords match, redirect to the dashboard page
+//             $_SESSION['email'] = $email;
+//             $_SESSION['name'] = $row2['firstname'];
+//             header("Location: userportal/userdashboard.php");
+//             exit();
+//         } else {
+//             // Passwords don't match
+//             echo '<script>alert("Invalid email or password. Please try again.");</script>';
+//         }
+//     } else {
+//         // User does not exist
+//         echo '<script>alert("Invalid email or password. Please try again.");</script>';
+//     }
+
+//     // Close database connection
+//     mysqli_close($conn);
+// }
+
 session_start();
 
 // Check if the form is submitted
 if (isset($_POST['login'])) {
-    // Define your database connection parameters
+    // Database connection parameters
     $host = 'localhost';
     $username = 'root';
     $password = '';
@@ -12,46 +70,48 @@ if (isset($_POST['login'])) {
     // Establish database connection
     $conn = mysqli_connect($host, $username, $password, $database);
 
-    // Check if the connection was successful
+    // Check connection
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    // Define your variables to store user input
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $name = "SELECT firstname FROM users WHERE email = '$email'";
-    $result2 = mysqli_query($conn, $name);
-    $row2 = mysqli_fetch_assoc($result2);
+    // Sanitize user input
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
-    // Perform SQL query to retrieve the hashed password for the given email
-    $query = "SELECT password FROM users WHERE email = '$email'";
-    $result = mysqli_query($conn, $query);
+    // Prepare SQL query to fetch user details
+    $stmt = $conn->prepare("SELECT firstname, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if (mysqli_num_rows($result) == 1) {
-        // Fetch the hashed password from the result
-        $row = mysqli_fetch_assoc($result);
+    if ($result->num_rows == 1) {
+        // Fetch user data
+        $row = $result->fetch_assoc();
         $hashed_password = $row['password'];
+        $firstname = $row['firstname'];
 
-        // Verify the entered password with the hashed password
+        // Verify password
         if (password_verify($password, $hashed_password)) {
-            // Passwords match, redirect to the dashboard page
+            // Password matches
             $_SESSION['email'] = $email;
-            $_SESSION['name'] = $row2['firstname'];
+            $_SESSION['name'] = $firstname;
             header("Location: userportal/userdashboard.php");
             exit();
         } else {
-            // Passwords don't match
+            // Password mismatch
             echo '<script>alert("Invalid email or password. Please try again.");</script>';
         }
     } else {
-        // User does not exist
+        // User not found
         echo '<script>alert("Invalid email or password. Please try again.");</script>';
     }
 
-    // Close database connection
+    // Close the statement and connection
+    $stmt->close();
     mysqli_close($conn);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
