@@ -7,7 +7,7 @@ if (isset($_POST['login'])) {
     $host = 'localhost';
     $username = 'root';
     $password = '';
-    $database = 'digilibrary_db';
+    $database = 'lms';
 
     // Establish database connection
     $conn = mysqli_connect($host, $username, $password, $database);
@@ -575,7 +575,7 @@ if (isset($_POST['login'])) {
                         <i class="bx bxs-contact"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" name="email" class="input-field" placeholder="Email" required pattern="^[a-z]+\.\d{2}[a-z]{3}\d{5}@vitbhopal\.ac\.in$">
+                        <input type="text" name="email" class="input-field" placeholder="Email" required pattern="^[A-Za-z]+\s*\d{2}@pdpu\.com$">
                         <i class="bx bxs-envelope"></i>
                     </div>
                     <div class="input-box">

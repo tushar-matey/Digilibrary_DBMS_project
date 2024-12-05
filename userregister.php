@@ -3,7 +3,7 @@
 session_start();
 
 // Establish database connection
-$con = mysqli_connect('localhost', 'root', '', 'digilibrary_db');
+$con = mysqli_connect('localhost', 'root', '', 'lms');
 
 // Check if connection is successful
 if (!$con) {
