@@ -7,7 +7,7 @@ if (isset($_POST['login'])) {
     $host = 'localhost';
     $username = 'root';
     $password = '';
-    $database = 'lms';
+    $database = 'digilibrary_db';
 
     // Establish database connection
     $conn = mysqli_connect($host, $username, $password, $database);
