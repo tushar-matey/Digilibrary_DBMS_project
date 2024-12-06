@@ -574,7 +574,7 @@ if (isset($_POST['login'])) {
                         <i class="bx bxs-contact"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" name="email" class="input-field" placeholder="Email" required pattern="^[a-z]+\.\d{2}[a-z]{3}\d{5}@vitbhopal\.ac\.in$">
+                        <input type="text" name="email" class="input-field" placeholder="Email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                         <i class="bx bxs-envelope"></i>
                     </div>
                     <div class="input-box">
