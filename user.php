@@ -17,36 +17,35 @@ if (isset($_POST['login'])) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    // Get user input safely
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    // Define your variables to store user input
+    $email = $_POST['email'];
     $password = $_POST['password'];
+    $name = "SELECT firstname FROM users WHERE email = '$email'";
+    $result2 = mysqli_query($conn, $name);
+    $row2 = mysqli_fetch_assoc($result2);
 
-    // Combine queries to fetch firstname and password hash in one step
-    $query = "SELECT firstname, password FROM users WHERE email = ?";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    // Perform SQL query to retrieve the hashed password for the given email
+    $query = "SELECT password FROM users WHERE email = '$email'";
+    $result = mysqli_query($conn, $query);
 
-    if ($result && mysqli_num_rows($result) === 1) {
-        // Fetch user data
+    if (mysqli_num_rows($result) == 1) {
+        // Fetch the hashed password from the result
         $row = mysqli_fetch_assoc($result);
         $hashed_password = $row['password'];
-        $firstname = $row['firstname'];
 
-        // Verify password
+        // Verify the entered password with the hashed password
         if (password_verify($password, $hashed_password)) {
-            // Password matches
+            // Passwords match, redirect to the dashboard page
             $_SESSION['email'] = $email;
-            $_SESSION['name'] = $firstname;
+            $_SESSION['name'] = $row2['firstname'];
             header("Location: userportal/userdashboard.php");
             exit();
         } else {
-            // Password mismatch
+            // Passwords don't match
             echo '<script>alert("Invalid email or password. Please try again.");</script>';
         }
     } else {
-        // User not found
+        // User does not exist
         echo '<script>alert("Invalid email or password. Please try again.");</script>';
     }
 
