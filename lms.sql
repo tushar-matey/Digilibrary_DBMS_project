@@ -31,7 +31,7 @@ CREATE TABLE `admin` (
   `id` int(4) NOT NULL,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
+  `email` varchar(33) NOT NULL,
   `password` varchar(255) NOT NULL,
   `mobile` bigint(10) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT 'uploads/default.jpg'
