@@ -200,7 +200,7 @@ CREATE TABLE `users` (
   `rollno` varchar(10) NOT NULL,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `mobile` bigint(11) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT 'uploads/default.jpg',
